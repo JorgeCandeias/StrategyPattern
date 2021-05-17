@@ -1,4 +1,6 @@
-﻿namespace Library.Models
+﻿using Library.Strategies.MinNotional;
+
+namespace Library.Models
 {
     public record Order(
         string Symbol,
@@ -6,5 +8,11 @@
         OrderType Type,
         TimeInForce? TimeInForce,
         decimal Quantity,
-        decimal Price);
+        decimal Price)
+    {
+        public Order WithMinNotional(IMinNotionalStrategySelector strategy, OrderContext context)
+        {
+            return strategy.Adjust(this, context);
+        }
+    }
 }
